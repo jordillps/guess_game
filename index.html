@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Joc Endevina endevinalla</title>
+</head>
+
+<body onload="setPictures()">
+  <div class="container" id="container">
+    <div class="item item1" data-picture=""></div>
+    <div class="item item2" data-picture=""></div>
+    <div class="item item3" data-picture=""></div>
+    <div class="item item4" data-picture=""></div>
+    <div class="item item5" data-picture=""></div>
+    <div class="item item6" data-picture=""></div>
+    <div class="item item7" data-picture=""></div>
+    <div class="item item8" data-picture=""></div>
+    <div class="item item9" data-picture=""></div>
+    <div class="item item10" data-picture=""></div>
+    <div class="item item11" data-picture=""></div>
+    <div class="item item12" data-picture=""></div>
+    <div class="item item13" data-picture=""></div>
+    <div class="item item14" data-picture=""></div>
+    <div class="item item15" data-picture=""></div>
+    <div class="item item16" data-picture=""></div>
+    <div class="item item17" data-picture=""></div>
+    <div class="item item18" data-picture=""></div>
+    <div class="item item19" data-picture=""></div>
+    <div class="item item20" data-picture=""></div>
+    <div class="item item21" data-picture=""></div>
+    <div class="item item22" data-picture=""></div>
+    <div class="item item23" data-picture=""></div>
+    <div class="item item24" data-picture=""></div>
+    <div class="item item25" data-picture=""></div>
+    <div class="item item26" data-picture=""></div>
+    <div class="item item27" data-picture=""></div>
+    <div class="item item28" data-picture=""></div>
+    <div class="item item29" data-picture=""></div>
+    <div class="item item30" data-picture=""></div>
+  </div>
+
+  <div id="final_game">
+    <h1>Enhorabona!!!</h1>
+    <p>Has acabat el joc amb<span></span>clicks!!!</p>
+  </div>
+
+  <style>
+
+    #container{
+      opacity:1;
+    }
+
+    .container {
+      display: grid;
+      grid-gap: 20px;
+      grid-template-areas:
+        "col col col col col"
+        "col col col col col"
+        "col col col col col"
+        "col col col col col"
+        "col col col col col"
+        "col col col col col"; 
+      height: 100vh;
+      position: static;
+    }
+
+
+    .item:hover{
+      background-color: yellowgreen;
+      cursor:pointer;
+      color:  yellowgreen;
+    }
+
+    .reverse{
+    	transform: rotateY(360deg);
+    	transition-duration: 1s;
+    }
+
+    .hide_button{
+      cursor:default;
+      visibility: hidden;
+    }
+
+    #final_game{
+      display: none;
+    }
+
+    .final_game{
+      /* display: grid; */
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.2);
+      align-content: center;
+      justify-items: center;
+      opacity:1;
+      text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+    }
+
+    .final_game h1{
+      font-size: 70px;
+      font-weight: 400;  
+    }
+
+    .final_game p{
+      font-size: 50px;
+      font-weight: 400;
+    }
+
+    .final_game p span{
+      font-weight: 800;
+    }
+
+    
+  </style>
+  <script>
+    var count = 0;
+    var items = document.querySelectorAll('.item');
+    let results = [];
+    let buttons_clicked = [];
+    var num_clicks;
+    var correct_clicks;
+    document.getElementById("final_game").style.display = "none";
+
+    
+
+    function clickItem(e){
+        num_clicks ++;
+        this.classList.add('reverse');
+        let image_back = "background-image:url("+this.getAttribute('data-picture')+")";
+        this.setAttribute("style", image_back);
+        count ++;
+        results.push(this.getAttribute("data-picture"));
+        buttons_clicked.push(this.classList);
+        if(count == 2){
+        	checkResults(results,buttons_clicked);	
+        }
+        
+    }
+
+    function setPictures(){
+      num_clicks = 0;
+      correct_clicks = 0;
+      let items_pictures =[];
+      let j=0;
+      let index_pictures = [];
+      let index_number = 0;
+      let k = 0;
+      //Aquests numeros no corresponen a cap foto
+      let numbers_not_pictures = [17,30,34,46]
+      //Creem els index de les fotos
+      //A la pàgina web hi ha 80 fotos diferents
+      //Escollirem 15 index duplicats
+      while(k<15){
+        index_number = Math.floor(Math.random() * 80) + 1;
+        //les foto 34,17 no existeix a la pagina web!
+        if(!index_pictures.includes(index_number) && !numbers_not_pictures.includes(index_number)){
+          index_pictures.push(index_number);
+          index_pictures.push(index_number);
+          k++;
+        }  
+      }
+      
+      let random_index_pictures = shuffleArray(index_pictures);
+     
+      
+      for(var i=0; i<30;i++){
+          items_pictures[i] = "https://picsum.photos/id/10"+random_index_pictures[i]+"/300/150";
+      }
+
+    	//Set atribut data-picture amb la ruta de la foto
+    	for (var i=0;i<items.length;i++){
+    		items[i].setAttribute('data-picture',items_pictures[i]);
+    	}
+
+    }
+
+    //Funció per a fer un random dels elements d'una array
+    function shuffleArray(array) {
+	    for (let i = array.length - 1; i > 0; i--) {
+	        const j = Math.floor(Math.random() * (i + 1));
+	        [array[i], array[j]] = [array[j], array[i]];
+	    }
+	    return array;
+	}
+
+	function checkResults(results,buttons_clicked){
+		let index_button1 = parseInt(buttons_clicked[0][1].substr(4))-1;
+		let index_button2 = parseInt(buttons_clicked[1][1].substr(4))-1;
+		if(results[0] === results[1]){
+			setTimeout(function(){
+				items[index_button1].classList.add('hide_button');
+				items[index_button2].classList.add('hide_button');
+        correct_clicks++;
+        if(correct_clicks == 15){
+          document.getElementById("container").setAttribute('style',"display:none");
+          var clicks_final = document.getElementById("final_game");
+          clicks_final.style.display = "grid";
+          clicks_final.classList.add("final_game");
+          clicks_final.innerHTML =
+            `<h1>Enhorabona!!!</h1>
+            <p>Has acabat el joc amb <span>${num_clicks}</span> clicks!!!</p>`;
+        }
+			},1000);
+			
+    }else{
+      setTimeout(function(){
+        items[index_button1].classList.remove('reverse');
+        items[index_button2].classList.remove('reverse');
+        items[index_button1].setAttribute("style","");
+        items[index_button2].setAttribute("style","");
+      },2000);
+    }
+        count = 0;
+        results.length = 0; 
+        buttons_clicked.length = 0;
+   
+	}
+    
+
+    items.forEach(item => item.addEventListener('click', clickItem));
+  </script>
+</body>
+
+</html>
